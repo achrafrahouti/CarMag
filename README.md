@@ -1,10 +1,10 @@
-# Renault Garage Management Microservice
+# Max Garage Management Microservice
 
-A Spring Boot microservice for managing Renault garages, vehicles, and accessories.
+A Spring Boot microservice for managing Max garages, vehicles, and accessories.
 
 ## Overview
 
-This microservice provides a comprehensive solution for managing Renault's network of affiliated garages, the vehicles they store, and the accessories associated with these vehicles. It implements a RESTful API with CRUD operations and includes an event-driven architecture for vehicle-related events.
+This microservice provides a comprehensive solution for managing Max's network of affiliated garages, the vehicles they store, and the accessories associated with these vehicles. It implements a RESTful API with CRUD operations and includes an event-driven architecture for vehicle-related events.
 
 ## Features
 
