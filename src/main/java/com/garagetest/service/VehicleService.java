@@ -127,7 +127,7 @@ public class VehicleService {
     
     private Vehicle mapToEntity(VehicleDTO dto) {
         Vehicle vehicle = new Vehicle();
-        vehicle.setId(dto.getId());
+//        vehicle.setId(dto.getId());
         vehicle.setBrand(dto.getBrand());
         vehicle.setModel(dto.getModel());
         vehicle.setManufacturingYear(dto.getManufacturingYear());

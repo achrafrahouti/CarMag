@@ -35,6 +35,8 @@ public class VehiclePublisher {
     private void sendVehicleEvent(VehicleEvent event) {
         try {
             kafkaTemplate.send(KafkaConfig.VEHICLE_TOPIC, event.getVehicle().getId().toString(), event);
+            log.info("Sent vehicle event: {} for vehicle ID: {}", event.getEventType(), event.getVehicle().getId());
+            log.info(event.toString());
         } catch (Exception e) {
             log.error("Error publishing vehicle event: {}", e.getMessage(), e);
         }

@@ -1,5 +1,6 @@
 package com.garagetest.dto;
 
+import com.garagetest.model.OpeningTime;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -31,5 +33,5 @@ public class GarageDTO {
     private String email;
     
     @NotNull(message = "Opening hours are required")
-    private Map<DayOfWeek, String> openingHours = new HashMap<>();
+    private Map<DayOfWeek, List<OpeningTime>> openingHours = new HashMap<>();
 }

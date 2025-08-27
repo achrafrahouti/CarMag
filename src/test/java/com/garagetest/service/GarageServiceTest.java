@@ -2,6 +2,7 @@ package com.garagetest.service;
 
 import com.garagetest.dto.GarageDTO;
 import com.garagetest.model.Garage;
+import com.garagetest.model.OpeningTime;
 import com.garagetest.repository.GarageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +43,29 @@ class GarageServiceTest {
     @BeforeEach
     void setUp() {
         // Setup test data
-        Map<DayOfWeek, String> openingHours = new HashMap<>();
-        openingHours.put(DayOfWeek.MONDAY, "09:00-18:00");
-        openingHours.put(DayOfWeek.TUESDAY, "09:00-18:00");
-        openingHours.put(DayOfWeek.WEDNESDAY, "09:00-18:00");
-        openingHours.put(DayOfWeek.THURSDAY, "09:00-18:00");
-        openingHours.put(DayOfWeek.FRIDAY, "09:00-18:00");
+        Map<DayOfWeek, List<OpeningTime>> openingHours = new HashMap<>();
+        
+        // Create opening times for each day
+        List<OpeningTime> mondayHours = new ArrayList<>();
+        mondayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(18, 0)));
+        
+        List<OpeningTime> tuesdayHours = new ArrayList<>();
+        tuesdayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(18, 0)));
+        
+        List<OpeningTime> wednesdayHours = new ArrayList<>();
+        wednesdayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(18, 0)));
+        
+        List<OpeningTime> thursdayHours = new ArrayList<>();
+        thursdayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(18, 0)));
+        
+        List<OpeningTime> fridayHours = new ArrayList<>();
+        fridayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(18, 0)));
+        
+        openingHours.put(DayOfWeek.MONDAY, mondayHours);
+        openingHours.put(DayOfWeek.TUESDAY, tuesdayHours);
+        openingHours.put(DayOfWeek.WEDNESDAY, wednesdayHours);
+        openingHours.put(DayOfWeek.THURSDAY, thursdayHours);
+        openingHours.put(DayOfWeek.FRIDAY, fridayHours);
 
         garage = new Garage();
         garage.setId(1L);

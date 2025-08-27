@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -36,13 +38,9 @@ public class Garage {
     @Email
     private String email;
 
-    @ElementCollection
-    @CollectionTable(name = "garage_opening_hours", 
-                    joinColumns = @JoinColumn(name = "garage_id"))
-    @MapKeyEnumerated(EnumType.STRING)
-    @MapKeyColumn(name = "day_of_week")
-    @Column(name = "opening_times")
-    private Map<DayOfWeek, String> openingHours = new HashMap<>();
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "json")
+    private Map<DayOfWeek, List<OpeningTime>> openingHours = new HashMap<>();
 
     @OneToMany(mappedBy = "garage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles = new ArrayList<>();

@@ -35,7 +35,20 @@ public class VehicleConsumer {
         log.info("Processing vehicle created event for vehicle: {} - {}", 
                 event.getVehicle().getId(),
                 event.getVehicle().getBrand() + " " + event.getVehicle().getModel());
-        
+
+        //print a big message to indicate a vehicle was created
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("********** VEHICLE CREATED EVENT **********");
+        log.info("********** VEHICLE CREATED EVENT **********");
+        log.info("********** VEHICLE CREATED EVENT **********");
+        log.info("********** VEHICLE CREATED EVENT **********");
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("**************************************************");
+        log.info("**************************************************");
         // Here you would implement any business logic needed when a vehicle is created
         // For example, sending notifications, updating statistics, etc.
     }

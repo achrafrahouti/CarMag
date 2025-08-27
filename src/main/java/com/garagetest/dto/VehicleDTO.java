@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Year;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +23,6 @@ public class VehicleDTO {
     private String model;
     
     @NotNull(message = "Manufacturing year is required")
-    @Past(message = "Manufacturing year must be in the past")
     private Integer manufacturingYear;
     
     @NotBlank(message = "Fuel type is required")

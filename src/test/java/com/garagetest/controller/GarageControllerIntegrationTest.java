@@ -3,6 +3,7 @@ package com.garagetest.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.garagetest.dto.GarageDTO;
 import com.garagetest.model.Garage;
+import com.garagetest.model.OpeningTime;
 import com.garagetest.repository.GarageRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -49,12 +53,30 @@ public class GarageControllerIntegrationTest {
         garageRepository.deleteAll();
 
         // Setup test data
-        Map<DayOfWeek, String> openingHours = new HashMap<>();
-        openingHours.put(DayOfWeek.MONDAY, "09:00-18:00");
-        openingHours.put(DayOfWeek.TUESDAY, "09:00-18:00");
-        openingHours.put(DayOfWeek.WEDNESDAY, "09:00-18:00");
-        openingHours.put(DayOfWeek.THURSDAY, "09:00-18:00");
-        openingHours.put(DayOfWeek.FRIDAY, "09:00-18:00");
+        Map<DayOfWeek, List<OpeningTime>> openingHours = new HashMap<>();
+        
+        // Create opening times for each day
+        List<OpeningTime> mondayHours = new ArrayList<>();
+        mondayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(12, 0)));
+        mondayHours.add(new OpeningTime(LocalTime.of(13 ,0), LocalTime.of(18, 0)));
+
+        List<OpeningTime> tuesdayHours = new ArrayList<>();
+        tuesdayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(18, 0)));
+        
+        List<OpeningTime> wednesdayHours = new ArrayList<>();
+        wednesdayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(18, 0)));
+        
+        List<OpeningTime> thursdayHours = new ArrayList<>();
+        thursdayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(18, 0)));
+        
+        List<OpeningTime> fridayHours = new ArrayList<>();
+        fridayHours.add(new OpeningTime(LocalTime.of(9, 0), LocalTime.of(18, 0)));
+        
+        openingHours.put(DayOfWeek.MONDAY, mondayHours);
+        openingHours.put(DayOfWeek.TUESDAY, tuesdayHours);
+        openingHours.put(DayOfWeek.WEDNESDAY, wednesdayHours);
+        openingHours.put(DayOfWeek.THURSDAY, thursdayHours);
+        openingHours.put(DayOfWeek.FRIDAY, fridayHours);
 
         garageDTO = new GarageDTO();
         garageDTO.setName("Test Garage");

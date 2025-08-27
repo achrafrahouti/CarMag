@@ -1,5 +1,7 @@
 package com.garagetest.config;
 
+import com.garagetest.messaging.VehicleEvent;
+import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -27,6 +29,14 @@ public class KafkaConfig {
     private String groupId;
 
     public static final String VEHICLE_TOPIC = "vehicles";
+    @Bean
+    public KafkaAdmin kafkaAdmin() {
+        Map<String, Object> configs = new HashMap<>();
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configs.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, 60000);
+        configs.put(AdminClientConfig.DEFAULT_API_TIMEOUT_MS_CONFIG, 60000);
+        return new KafkaAdmin(configs);
+    }
 
     @Bean
     public NewTopic vehicleTopic() {
@@ -53,19 +63,21 @@ public class KafkaConfig {
 
     // Consumer configuration
     @Bean
-    public ConsumerFactory<String, Object> consumerFactory() {
+    public ConsumerFactory<String, VehicleEvent> consumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "com.garagetest.dto");
-        return new DefaultKafkaConsumerFactory<>(configProps);
+        configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "com.garagetest.dto,com.garagetest.messaging");
+        return new DefaultKafkaConsumerFactory<>(configProps,
+                new StringDeserializer(),
+                new JsonDeserializer<>(VehicleEvent.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, VehicleEvent> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, VehicleEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
