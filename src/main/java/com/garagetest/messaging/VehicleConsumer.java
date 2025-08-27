@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class VehicleConsumer {
     
-    @KafkaListener(topics = KafkaConfig.VEHICLE_TOPIC, groupId = "${spring.kafka.consumer.group-id:garage-service}")
+    @KafkaListener(topics = KafkaConfig.VEHICLE_TOPIC, 
+                  groupId = "${spring.kafka.consumer.group-id:garage-service}",
+                  containerFactory = "kafkaListenerContainerFactory")
     public void consumeVehicleEvent(@Payload VehicleEvent event) {
         log.info("Received vehicle event: {} for vehicle ID: {}", 
                 event.getEventType(), 

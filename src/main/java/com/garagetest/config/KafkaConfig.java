@@ -29,14 +29,14 @@ public class KafkaConfig {
     private String groupId;
 
     public static final String VEHICLE_TOPIC = "vehicles";
-    @Bean
-    public KafkaAdmin kafkaAdmin() {
-        Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        configs.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, 60000);
-        configs.put(AdminClientConfig.DEFAULT_API_TIMEOUT_MS_CONFIG, 60000);
-        return new KafkaAdmin(configs);
-    }
+//    @Bean
+//    public KafkaAdmin kafkaAdmin() {
+//        Map<String, Object> configs = new HashMap<>();
+//        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+//        configs.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, 60000);
+//        configs.put(AdminClientConfig.DEFAULT_API_TIMEOUT_MS_CONFIG, 60000);
+//        return new KafkaAdmin(configs);
+//    }
 
     @Bean
     public NewTopic vehicleTopic() {
@@ -69,10 +69,19 @@ public class KafkaConfig {
         configProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "com.garagetest.dto,com.garagetest.messaging");
+        configProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        configProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
+        configProps.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "1000");
+        configProps.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
+        configProps.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "100");
+        configProps.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, "300000");
+        configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+//        configProps.put(JsonDeserializer.TYPE_MAPPINGS, "vehicleEvent:com.garagetest.messaging.VehicleEvent");
+        configProps.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, "false");
+        configProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.garagetest.messaging.VehicleEvent");
         return new DefaultKafkaConsumerFactory<>(configProps,
                 new StringDeserializer(),
-                new JsonDeserializer<>(VehicleEvent.class));
+                new JsonDeserializer<>(VehicleEvent.class, false));
     }
 
     @Bean
